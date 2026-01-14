@@ -1,0 +1,17 @@
+# --- General ---
+.DS_Store
+Thumbs.db
+.vscode/
+
+# --- Backend (Python) ---
+backend/venv/
+backend/__pycache__/
+backend/*.pyc
+backend/.env
+
+# --- Frontend (Node.js) ---
+frontend/node_modules/
+frontend/.next/
+frontend/.env.local
+frontend/out/
+frontend/build/
