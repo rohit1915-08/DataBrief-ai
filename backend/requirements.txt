@@ -4,5 +4,5 @@ python-multipart
 pandas
 openai
 python-dotenv
-duckduckgo-search
+duckduckgo-search==6.2.1
 tabulate
