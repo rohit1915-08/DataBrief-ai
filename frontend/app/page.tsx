@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef, useMemo } from "react";
+import { API_URL } from "../lib/config";
 import {
   BarChart,
   Bar,
@@ -104,7 +105,7 @@ export default function Home() {
 
   const fetchHistory = async () => {
     try {
-      const res = await fetch("http://127.0.0.1:8000/history");
+      const res = await fetch(`${API_URL}/history`);
       const data = await res.json();
       setHistory(data);
     } catch (e) {}
@@ -144,7 +145,7 @@ export default function Home() {
     setQuery("");
     setChartData(null);
     setFile(null);
-    await fetch("http://127.0.0.1:8000/reset", { method: "POST" });
+    await fetch(`${API_URL}/reset`, { method: "POST" });
     setHistory([]);
   };
 
@@ -179,7 +180,7 @@ export default function Home() {
     if (file) formData.append("file", file);
 
     try {
-      const res = await fetch("http://127.0.0.1:8000/analyze", {
+      const res = await fetch(`${API_URL}/analyze`, {
         method: "POST",
         body: formData,
       });
@@ -213,7 +214,7 @@ export default function Home() {
     }
     setReportLoading(true);
     try {
-      const res = await fetch("http://127.0.0.1:8000/summary");
+      const res = await fetch(`${API_URL}/summary`);
       const data = await res.json();
       if (data.error) {
         alert("Could not generate summary.");
@@ -275,7 +276,7 @@ export default function Home() {
     doc.setFontSize(11);
     doc.setTextColor(60, 60, 60);
     reportData.key_findings.forEach((item: string) => {
-      const lines = doc.splitTextToSize(`•  ${item}`, pageWidth - 40);
+      const lines = doc.splitTextToSize(`•  ${item}`, pageWidth - 40);
       doc.text(lines, 20, yPos);
       yPos += lines.length * 7 + 4;
     });
@@ -287,7 +288,7 @@ export default function Home() {
     doc.setFontSize(11);
     doc.setTextColor(60, 60, 60);
     reportData.suggestions.forEach((item: string) => {
-      const lines = doc.splitTextToSize(`➜  ${item}`, pageWidth - 40);
+      const lines = doc.splitTextToSize(`➜  ${item}`, pageWidth - 40);
       doc.text(lines, 20, yPos);
       yPos += lines.length * 7 + 4;
     });
