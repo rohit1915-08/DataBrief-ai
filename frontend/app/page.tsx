@@ -632,7 +632,7 @@ export default function Home() {
         </div>
 
         {/* INPUT AREA (Pinned to Bottom, Fixed Mobile Spacing) */}
-        <div className="w-full bg-white/80 backdrop-blur-md border-t border-gray-200 p-4 pb-8 md:pb-4 z-30 shrink-0">
+        <div className="w-full bg-white/1 backdrop-blur-md border-t border-gray-200 p-4 pb-8 md:pb-4 z-30 shrink-0">
           <div className="max-w-4xl mx-auto flex flex-col gap-3">
             <div className="flex flex-wrap items-center gap-2 px-1">
               <label className="group flex items-center gap-2 cursor-pointer text-[10px] sm:text-xs font-bold text-black hover:text-indigo-400 transition-colors bg-white px-3 py-1.5 rounded-full border border-gray-200 hover:border-indigo-300 shadow-sm">
