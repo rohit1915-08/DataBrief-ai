@@ -46,17 +46,14 @@ export default function Home() {
   const [chartData, setChartData] = useState<any>(null);
   const [history, setHistory] = useState<any[]>([]);
 
-  // Sidebar starts closed
   const [isSidebarOpen, setSidebarOpen] = useState(false);
 
   const [simMode, setSimMode] = useState(false);
   const [simFactor, setSimFactor] = useState(0);
   const [isSpeaking, setIsSpeaking] = useState(false);
 
-  // Chart Toggle State
   const [wantsChart, setWantsChart] = useState(false);
 
-  // Report State
   const [showReport, setShowReport] = useState(false);
   const [reportData, setReportData] = useState<any>(null);
   const [reportLoading, setReportLoading] = useState(false);
@@ -77,7 +74,6 @@ export default function Home() {
     fetchHistory();
   }, []);
 
-  // Auto-scroll to bottom
   useEffect(() => {
     if (chartData && mainScrollRef.current) {
       mainScrollRef.current.scrollTo({
@@ -119,6 +115,7 @@ export default function Home() {
     utterance.onstart = () => setIsSpeaking(true);
     utterance.onend = () => setIsSpeaking(false);
   };
+
   const stopSpeaking = () => {
     window.speechSynthesis.cancel();
     setIsSpeaking(false);
@@ -276,7 +273,7 @@ export default function Home() {
     doc.setFontSize(11);
     doc.setTextColor(60, 60, 60);
     reportData.key_findings.forEach((item: string) => {
-      const lines = doc.splitTextToSize(`•  ${item}`, pageWidth - 40);
+      const lines = doc.splitTextToSize(`•  ${item}`, pageWidth - 40);
       doc.text(lines, 20, yPos);
       yPos += lines.length * 7 + 4;
     });
@@ -288,16 +285,11 @@ export default function Home() {
     doc.setFontSize(11);
     doc.setTextColor(60, 60, 60);
     reportData.suggestions.forEach((item: string) => {
-      const lines = doc.splitTextToSize(`➜  ${item}`, pageWidth - 40);
+      const lines = doc.splitTextToSize(`➜  ${item}`, pageWidth - 40);
       doc.text(lines, 20, yPos);
       yPos += lines.length * 7 + 4;
     });
     doc.save("DataBrief-Executive-Report.pdf");
-  };
-
-  const closeAndClear = async () => {
-    setShowReport(false);
-    handleClear();
   };
 
   const CustomTooltip = ({ active, payload, label }: any) => {
@@ -432,7 +424,6 @@ export default function Home() {
     <div className="flex h-screen w-full relative overflow-hidden font-sans text-gray-900">
       <WorldBackground isSnowing={true} />
 
-      {/* MOBILE BACKDROP - Closes Sidebar when clicked */}
       {isSidebarOpen && (
         <div
           onClick={() => setSidebarOpen(false)}
@@ -440,13 +431,10 @@ export default function Home() {
         />
       )}
 
-      {/* SIDEBAR - Pushes content on Desktop, Overlays on Mobile */}
       <aside
-        className={`
-          ${isSidebarOpen ? "w-80 translate-x-0" : "w-0 -translate-x-full"}
-          fixed md:relative z-50 h-full
-          bg-white border-r border-gray-200 shadow-2xl transition-all duration-300 ease-in-out flex flex-col shrink-0 overflow-hidden
-        `}
+        className={`${
+          isSidebarOpen ? "w-80 translate-x-0" : "w-0 -translate-x-full"
+        } fixed md:relative z-50 h-full bg-white border-r border-gray-200 shadow-2xl transition-all duration-300 ease-in-out flex flex-col shrink-0 overflow-hidden`}
       >
         <div className="p-5 border-b border-gray-100 flex justify-between items-center bg-gray-50 min-w-[320px]">
           <h2 className="font-bold text-gray-800 flex items-center gap-2">
@@ -483,9 +471,7 @@ export default function Home() {
         </div>
       </aside>
 
-      {/* MAIN CONTENT - FLEX COLUMN LAYOUT */}
       <main className="flex-1 flex flex-col h-full relative w-full bg-transparent min-w-0">
-        {/* Header - Fixed Height */}
         <header className="bg-white/80 backdrop-blur-md border-b border-white/20 px-6 py-4 flex items-center justify-between z-30 shrink-0">
           <div className="flex items-center gap-4">
             <button
@@ -521,14 +507,12 @@ export default function Home() {
           </div>
         </header>
 
-        {/* Scrollable Content (Takes up all middle space) */}
         <div
           ref={mainScrollRef}
           className="flex-1 overflow-y-auto p-4 md:p-8 w-full scroll-smooth"
         >
           {chartData && (
             <div className="w-full max-w-5xl mx-auto space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
-              {/* Chart Card */}
               <div className="bg-white/95 backdrop-blur-xl p-6 rounded-2xl shadow-xl border border-white/50">
                 <div className="flex flex-col sm:flex-row justify-between items-start mb-6 gap-4">
                   <div>
@@ -547,8 +531,6 @@ export default function Home() {
                       </div>
                     )}
                   </div>
-
-                  {/* Controls */}
                   {chartData.data && (
                     <div className="flex flex-wrap gap-2 w-full sm:w-auto">
                       <button
@@ -576,8 +558,6 @@ export default function Home() {
                     </div>
                   )}
                 </div>
-
-                {/* Simulator Slider */}
                 {simMode && (
                   <div className="mb-6 p-4 bg-indigo-50/50 rounded-xl border border-indigo-100 animate-in slide-in-from-top-2">
                     <div className="flex justify-between text-xs font-bold text-indigo-400 mb-2 uppercase tracking-wider">
@@ -598,8 +578,6 @@ export default function Home() {
                     </div>
                   </div>
                 )}
-
-                {/* The Chart */}
                 {chartData.data && (
                   <div
                     ref={chartRef}
@@ -609,8 +587,6 @@ export default function Home() {
                   </div>
                 )}
               </div>
-
-              {/* Analysis Text Card */}
               <div className="bg-white/90 backdrop-blur-md p-6 rounded-2xl shadow-lg border border-white/40 flex gap-4 items-start">
                 <button
                   onClick={isSpeaking ? stopSpeaking : speakSummary}
@@ -635,8 +611,6 @@ export default function Home() {
                   </p>
                 </div>
               </div>
-
-              {/* Suggestions */}
               {chartData.suggestions && (
                 <div className="flex flex-wrap gap-2 justify-center pb-4">
                   {chartData.suggestions.map((question: string, i: number) => (
@@ -657,18 +631,19 @@ export default function Home() {
           )}
         </div>
 
-        {/* INPUT AREA (Pinned to Bottom, No Overlap, No Glaze) */}
-        <div className="p-4 w-full max-w-4xl mx-auto z-30 shrink-0">
-          <div className="flex flex-col gap-3">
-            {/* Action Pills */}
-            <div className="flex flex-wrap items-center gap-2 pl-2 mb-1">
-              <label className="group flex items-center gap-2 cursor-pointer text-xs font-bold text-black hover:text-indigo-400 transition-colors bg-white px-3 py-1.5 rounded-full border border-gray-200 hover:border-indigo-300 shadow-sm">
+        {/* INPUT AREA (Pinned to Bottom, Fixed Mobile Spacing) */}
+        <div className="w-full bg-white/80 backdrop-blur-md border-t border-gray-200 p-4 pb-8 md:pb-4 z-30 shrink-0">
+          <div className="max-w-4xl mx-auto flex flex-col gap-3">
+            <div className="flex flex-wrap items-center gap-2 px-1">
+              <label className="group flex items-center gap-2 cursor-pointer text-[10px] sm:text-xs font-bold text-black hover:text-indigo-400 transition-colors bg-white px-3 py-1.5 rounded-full border border-gray-200 hover:border-indigo-300 shadow-sm">
                 <Upload
                   size={14}
                   className="group-hover:scale-110 transition-transform"
                 />
                 {file ? (
-                  <span className="text-indigo-600">{file.name}</span>
+                  <span className="text-indigo-600 truncate max-w-25">
+                    {file.name}
+                  </span>
                 ) : (
                   "Attach CSV"
                 )}
@@ -682,15 +657,14 @@ export default function Home() {
               {file && (
                 <button
                   onClick={() => setFile(null)}
-                  className="text-gray-400 hover:text-red-500 transition-colors"
+                  className="text-gray-400 hover:text-red-500"
                 >
                   <X size={16} />
                 </button>
               )}
-
               <button
                 onClick={() => setWantsChart(!wantsChart)}
-                className={`flex items-center gap-2 text-xs font-bold px-3 py-1.5 rounded-full border transition-all shadow-sm select-none ${
+                className={`flex items-center gap-2 text-[10px] sm:text-xs font-bold px-3 py-1.5 rounded-full border transition-all shadow-sm select-none ${
                   wantsChart
                     ? "bg-indigo-600 text-white border-indigo-600 shadow-indigo-200"
                     : "bg-white text-black border-gray-200 hover:border-indigo-300 hover:text-indigo-600"
@@ -704,27 +678,25 @@ export default function Home() {
                 {wantsChart ? "Chart: ON" : "Generate Chart"}
               </button>
             </div>
-
-            {/* Input Field - Clean White Bar */}
-            <div className="flex gap-2 items-center bg-white rounded-2xl p-2 border border-gray-300 shadow-2xl focus-within:ring-2 focus-within:ring-indigo-200 focus-within:border-indigo-400 transition-all">
+            <div className="flex gap-2 items-center bg-white rounded-2xl p-1.5 border border-gray-300 shadow-lg focus-within:ring-2 focus-within:ring-indigo-200 focus-within:border-indigo-400 transition-all">
               <input
                 type="text"
-                placeholder="Ask about crypto, stocks, or upload data..."
-                className="flex-1 p-3 bg-transparent outline-none text-gray-800 placeholder-gray-400"
+                placeholder="Ask crypto, stocks, or data..."
+                className="flex-1 p-2 sm:p-3 bg-transparent outline-none text-sm sm:text-base text-gray-800 placeholder-gray-400 min-w-0"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && handleSearch()}
               />
               <button
                 onClick={startListening}
-                className="p-3 text-gray-400 hover:text-indigo-600 hover:bg-gray-100 rounded-xl transition-colors"
+                className="p-2 sm:p-3 text-gray-400 hover:text-indigo-600 hover:bg-gray-100 rounded-xl transition-colors shrink-0"
               >
                 <Mic size={20} />
               </button>
               <button
                 onClick={() => handleSearch()}
                 disabled={loading}
-                className="bg-indigo-600 text-white p-3 rounded-xl font-bold flex items-center justify-center hover:bg-indigo-700 transition-all shadow-md shadow-indigo-200 disabled:opacity-50 disabled:shadow-none active:scale-95"
+                className="bg-indigo-600 text-white p-2.5 sm:p-3 rounded-xl font-bold flex items-center justify-center hover:bg-indigo-700 transition-all shadow-md disabled:opacity-50 shrink-0 active:scale-95"
               >
                 {loading ? (
                   <Loader2 className="animate-spin" size={20} />
@@ -737,7 +709,6 @@ export default function Home() {
         </div>
       </main>
 
-      {/* Report Modal */}
       {showReport && reportData && (
         <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 backdrop-blur-sm animate-in fade-in p-4">
           <div className="bg-white rounded-3xl p-8 max-w-xl w-full shadow-2xl relative max-h-[90vh] overflow-y-auto">
@@ -758,7 +729,6 @@ export default function Home() {
                 {reportData.title}
               </div>
             </div>
-
             <div className="space-y-6">
               <div>
                 <h3 className="text-xs font-black text-indigo-500 uppercase tracking-widest mb-3">
@@ -787,7 +757,6 @@ export default function Home() {
                 </ul>
               </div>
             </div>
-
             <div className="mt-8 flex gap-3">
               <button
                 onClick={downloadPDF}
@@ -800,7 +769,6 @@ export default function Home() {
         </div>
       )}
 
-      {/* Copyright */}
       <div className="fixed bottom-2 right-4 z-50 text-[10px] font-mono text-gray-300 pointer-events-none mix-blend-difference select-none">
         © @rohit1915-08
       </div>
